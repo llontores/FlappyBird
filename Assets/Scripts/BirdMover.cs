@@ -5,7 +5,7 @@ using UnityEngine.Events;
 
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(Animator))]
-public class Player : MonoBehaviour
+public class BirdMover : MonoBehaviour
 {
     [SerializeField] private float _tapForce;
     [SerializeField] private float _speed;
@@ -24,11 +24,12 @@ public class Player : MonoBehaviour
 
     private void Start(){
         _animator = GetComponent<Animator>();
-        transform.position = _startPosition;
         _rigidbody = GetComponent<Rigidbody2D>();
-        _rigidbody.velocity = Vector2.zero;
+
         _maxRotation = Quaternion.Euler(0,0,_maxRotationZ);
         _minRotation = Quaternion.Euler(0,0,_minRotationZ);
+
+        Reset();
     }
 
     private void Update(){
@@ -51,5 +52,12 @@ public class Player : MonoBehaviour
         if(collider.TryGetComponent(out Wall wall)){
             Died?.Invoke();
         }
+    }
+
+    public void Reset()
+    {
+        transform.position = _startPosition;
+        transform.rotation = Quaternion.Euler(0, 0, 0);
+        _rigidbody.velocity = Vector2.zero;
     }
 }
