@@ -17,7 +17,7 @@ public abstract class Screen : MonoBehaviour
     }
     protected abstract void OnButtonClick();
 
-    protected abstract void Open();
+    public abstract void Open();
 
-    protected abstract void Close();
+    public abstract void Close();
 }

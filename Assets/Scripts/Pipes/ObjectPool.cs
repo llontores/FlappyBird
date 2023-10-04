@@ -30,7 +30,7 @@ public class ObjectPool : MonoBehaviour
         return result != null;
     }
 
-    private void ResetPool(){
+    public void ResetPool(){
         foreach (GameObject pipe in _pool)
         {
             pipe.SetActive(false);   
