@@ -17,9 +17,11 @@ public class PipeSpawner : ObjectPool
     }
 
     private IEnumerator SpawnPipes(){
+        
         WaitForSeconds delay = new WaitForSeconds(_delay);
 
         while(true){
+
             if(TryGetObject(out GameObject pipe)){
                 float spawnPointY = Random.Range(_minPositionY,_maxPositionY);
                 Vector3 spawnPoint = new Vector3(transform.position.x,spawnPointY,transform.position.z);

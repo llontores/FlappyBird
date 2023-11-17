@@ -26,6 +26,7 @@ public class Game : MonoBehaviour
     private void Start()
     {
         Time.timeScale = 0;
+        _gameOverScreen.Close();
         _startScreen.Open();
     }
 
@@ -53,3 +54,4 @@ public class Game : MonoBehaviour
         _gameOverScreen.Open();
     }
 }
+    

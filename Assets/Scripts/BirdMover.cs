@@ -34,7 +34,7 @@ public class BirdMover : MonoBehaviour
 
     private void Update(){
 
-        if(Input.GetKeyDown(KeyCode.Space)){
+        if(Input.GetMouseButtonDown(0)){
 
             if(transform.position.y > _minPositionY & transform.position.y < _maxPositionY){
                 _animator.SetTrigger("FlowUp");
