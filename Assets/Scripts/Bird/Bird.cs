@@ -6,10 +6,14 @@ using UnityEngine.Events;
 [RequireComponent(typeof(BirdMover))]
 public class Bird : MonoBehaviour
 {
+    [SerializeField] private float _maxHealth;
+
     public event UnityAction GameOver;
-    public event UnityAction<int> ScoreChanged;
+    public event UnityAction<float> HealthChanged;
     private BirdMover _mover;
     private int _score;
+    private float _health;
+
     private void Start()
     {
         _mover = GetComponent<BirdMover>();
@@ -17,9 +21,9 @@ public class Bird : MonoBehaviour
 
     public void ResetPlayer()
     {
+        _health = _maxHealth;
         _mover.Reset();
-        _score = 0;
-        ScoreChanged?.Invoke(_score);
+        HealthChanged?.Invoke(_health);
     }
 
     public void Die()
@@ -27,8 +31,10 @@ public class Bird : MonoBehaviour
         GameOver?.Invoke();
     }
 
-    public void IncreaseScore(){
-        _score++;
-        ScoreChanged?.Invoke(_score);
+    public void IncreaseHealth(float damage){
+        _health -= damage;
+        HealthChanged?.Invoke(_health);
+        if (_health <= 0)
+            Die();
     }
 }

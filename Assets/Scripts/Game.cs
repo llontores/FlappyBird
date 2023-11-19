@@ -5,9 +5,10 @@ using UnityEngine;
 public class Game : MonoBehaviour
 {
     [SerializeField] private Bird _bird;
-    [SerializeField] private PipeSpawner _spawner;
+    [SerializeField] private EnemiesSpawner _spawner;
     [SerializeField] private GameOverScreen _gameOverScreen;
     [SerializeField] private StartScreen _startScreen;
+    public bool IsActive { get; private set; }
 
     private void OnEnable()
     {
@@ -25,6 +26,7 @@ public class Game : MonoBehaviour
 
     private void Start()
     {
+        IsActive = false;
         Time.timeScale = 0;
         _gameOverScreen.Close();
         _startScreen.Open();
@@ -44,12 +46,14 @@ public class Game : MonoBehaviour
     }
     private void StartGame()
     {
+        IsActive = true;
         Time.timeScale = 1;
         _bird.ResetPlayer();
     }
 
     private void OnGameOver()
     {
+        IsActive = false;
         Time.timeScale = 0;
         _gameOverScreen.Open();
     }

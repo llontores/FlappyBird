@@ -12,11 +12,11 @@ public class BirdCollisionHandler : MonoBehaviour
         _bird = GetComponent<Bird>();
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        if(collision.TryGetComponent(out ScoreZone zone))
-            _bird.IncreaseScore();
+        if (collision.collider.TryGetComponent(out Bullet bullet))
+            _bird.IncreaseHealth(bullet.Damage);
         else
-           _bird.Die();
+            _bird.Die();
     }
 }

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PipeSpawner : ObjectPool
+public class EnemiesSpawner : ObjectPool
 {
     [SerializeField] private GameObject _prefab;
     [SerializeField] private float _minPositionY;
@@ -13,22 +13,21 @@ public class PipeSpawner : ObjectPool
 
     private void Start(){
         Initialize(_prefab);
-        _spawnPipesJob = StartCoroutine(SpawnPipes());
+        _spawnPipesJob = StartCoroutine(SpawnEnemies());
     }
 
-    private IEnumerator SpawnPipes(){
+    private IEnumerator SpawnEnemies(){
         
         WaitForSeconds delay = new WaitForSeconds(_delay);
 
         while(true){
 
-            if(TryGetObject(out GameObject pipe)){
+            if(TryGetObject(out GameObject enemy)){
                 float spawnPointY = Random.Range(_minPositionY,_maxPositionY);
                 Vector3 spawnPoint = new Vector3(transform.position.x,spawnPointY,transform.position.z);
-                pipe.SetActive(true);
-                pipe.transform.position = spawnPoint;
-                
-                DisableObjectsAbroadScreen();
+                enemy.SetActive(true);
+                enemy.transform.position = spawnPoint;
+                EnemyShooter shooter = enemy.GetComponent<EnemyShooter>();
             }
 
             yield return delay;

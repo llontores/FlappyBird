@@ -9,11 +9,9 @@ public class ObjectPool : MonoBehaviour
     [SerializeField] private int _capacity; 
 
     private List<GameObject> _pool = new List<GameObject>();
-    private Camera _camera;
 
     protected void Initialize(GameObject prefab){
 
-        _camera = Camera.main;
         
         for (int i = 0; i < _capacity; i++)
         {
@@ -34,18 +32,6 @@ public class ObjectPool : MonoBehaviour
         foreach (GameObject pipe in _pool)
         {
             pipe.SetActive(false);   
-        }
-    }
-
-    protected void DisableObjectsAbroadScreen(){
-        Vector3 disablePoint = _camera.ViewportToWorldPoint(new Vector2(0, 0.5f));
-
-        foreach (GameObject pipe in _pool)
-        {
-            if(pipe.activeSelf == true){
-                if(pipe.transform.position.x < disablePoint.x)
-                    pipe.SetActive(false);
-            }
         }
     }
 }
