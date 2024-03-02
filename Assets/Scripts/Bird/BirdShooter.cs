@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(BirdInput))]
 public class BirdShooter : MonoBehaviour
 {
     [SerializeField] private Bullet _bullet;

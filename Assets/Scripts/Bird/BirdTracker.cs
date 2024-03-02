@@ -8,6 +8,7 @@ public class BirdTracker : MonoBehaviour
     [SerializeField] private float _xOffset;
 
     private void Update(){
-        transform.position = new Vector3(_player.position.x - _xOffset,transform.position.y,transform.position.z);
+        transform.position = new Vector3(_player.position.x - _xOffset,
+            transform.position.y,transform.position.z);
     }
 }
