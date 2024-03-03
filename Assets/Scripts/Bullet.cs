@@ -23,10 +23,8 @@ public class Bullet : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.TryGetComponent(out Bird bird))
-            bird.IncreaseHealth(_damage);
-        if (collision.TryGetComponent(out Enemy enemy))
-            enemy.IncreaseHealth(_damage);
+        if (collision.TryGetComponent(out AliveObject aliveObject))
+            aliveObject.IncreaseHealth(_damage);
         Destroy(gameObject);
     }
 

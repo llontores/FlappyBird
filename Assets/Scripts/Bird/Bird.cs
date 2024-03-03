@@ -4,15 +4,13 @@ using UnityEngine;
 using UnityEngine.Events;
 
 [RequireComponent(typeof(BirdMover))]
-public class Bird : MonoBehaviour
+public class Bird : AliveObject
 {
-    [SerializeField] private float _maxHealth;
-
     public event UnityAction GameOver;
     public event UnityAction<float> HealthChanged;
+
     private BirdMover _mover;
     private int _score;
-    private float _health;
 
     private void Start()
     {
@@ -31,8 +29,9 @@ public class Bird : MonoBehaviour
         GameOver?.Invoke();
     }
 
-    public void IncreaseHealth(float damage){
-        _health -= damage;
+    public override void IncreaseHealth(float damage){
+        base.IncreaseHealth(damage);
+
         HealthChanged?.Invoke(_health);
         if (_health <= 0)
             Die();
