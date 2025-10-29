@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Bird))]
@@ -14,7 +12,7 @@ public class BirdCollisionHandler : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.TryGetComponent(out ScoreZone zone))
+        if(collision.TryGetComponent(out ScoreZone _))
             _bird.IncreaseScore();
         else
            _bird.Die();
