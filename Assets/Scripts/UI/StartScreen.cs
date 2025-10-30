@@ -1,4 +1,3 @@
-using UnityEngine.Events;
 using Zenject;
 
 public class StartScreen : Screen

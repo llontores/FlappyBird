@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.Events;
 using Zenject;
 
 [RequireComponent(typeof(BirdMover))]
