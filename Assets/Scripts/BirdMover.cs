@@ -18,7 +18,6 @@ public class BirdMover : MonoBehaviour
     private Animator _animator;
     private Quaternion _minRotation;
     private Quaternion _maxRotation;
-    public event UnityAction Died;
 
     private void Start(){
         _animator = GetComponent<Animator>();
@@ -43,13 +42,6 @@ public class BirdMover : MonoBehaviour
         }
 
         transform.rotation = Quaternion.Lerp(transform.rotation, _minRotation, _rotationSpeed * Time.deltaTime);
-    }
-
-    private void OnTriggerEnter2D(Collider2D collider){
-        
-        if(collider.TryGetComponent(out Wall wall)){
-            Died?.Invoke();
-        }
     }
 
     public void Reset()

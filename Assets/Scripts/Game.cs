@@ -1,31 +1,42 @@
+using System;
 using UnityEngine;
+using Zenject;
 
-public class Game : MonoBehaviour
+public class Game : IInitializable, IDisposable
 {
-    [SerializeField] private Bird _bird;
-    [SerializeField] private PipeSpawner _spawner;
-    [SerializeField] private GameOverScreen _gameOverScreen;
-    [SerializeField] private StartScreen _startScreen;
+    private Bird _bird;
+    private PipeSpawner _spawner;
+    private GameOverScreen _gameOverScreen;
+    private StartScreen _startScreen;
+    private SignalBus _signalBus;
 
-    private void OnEnable()
+    [Inject]
+    public void Construct(Bird bird, PipeSpawner spawner, GameOverScreen gameOverScreen, StartScreen startScreen, SignalBus signalBus)
     {
-        _bird.GameOver += OnGameOver;
-        _gameOverScreen.RestartButtonClick += OnRestartButtonClick;
-        _startScreen.PlayButtonClick += OnPlayButtonClick;
+        _bird = bird;
+        _spawner = spawner;
+        _gameOverScreen = gameOverScreen;
+        _startScreen = startScreen;
+        _signalBus = signalBus;
     }
 
-    private void OnDisable()
-    {
-        _bird.GameOver -= OnGameOver;
-        _gameOverScreen.RestartButtonClick -= OnRestartButtonClick;
-        _startScreen.PlayButtonClick -= OnPlayButtonClick;
-    }
 
-    private void Start()
+    public void Initialize()
     {
+        _signalBus.Subscribe<GameOverSignal>(OnGameOver);
+        _signalBus.Subscribe<RestartButtonClickedSignal>(OnRestartButtonClick);
+        _signalBus.Subscribe<PlayButtonClickedSignal>(OnPlayButtonClick);
+        
         Time.timeScale = 0;
         _gameOverScreen.Close();
         _startScreen.Open();
+    }
+
+    public void Dispose()
+    {
+        _signalBus.Unsubscribe<GameOverSignal>(OnGameOver);
+        _signalBus.Unsubscribe<RestartButtonClickedSignal>(OnRestartButtonClick);
+        _signalBus.Unsubscribe<PlayButtonClickedSignal>(OnPlayButtonClick);
     }
 
     private void OnRestartButtonClick()

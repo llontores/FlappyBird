@@ -1,13 +1,20 @@
 using UnityEngine;
 using UnityEngine.Events;
+using Zenject;
 
 [RequireComponent(typeof(BirdMover))]
 public class Bird : MonoBehaviour
 {
-    public event UnityAction GameOver;
-    public event UnityAction<int> ScoreChanged;
+    private SignalBus _signalBus;
     private BirdMover _mover;
     private int _score;
+
+    [Inject]
+    public void Construct(SignalBus signalBus)
+    {
+        _signalBus = signalBus;
+    }
+    
     private void Start()
     {
         _mover = GetComponent<BirdMover>();
@@ -17,16 +24,16 @@ public class Bird : MonoBehaviour
     {
         _mover.Reset();
         _score = 0;
-        ScoreChanged?.Invoke(_score);
+        _signalBus.Fire(new ScoreChangedSignal(){Score = _score});
     }
 
     public void Die()
     {
-        GameOver?.Invoke();
+        _signalBus.Fire(new GameOverSignal());
     }
 
     public void IncreaseScore(){
         _score++;
-        ScoreChanged?.Invoke(_score);
+        _signalBus.Fire(new ScoreChangedSignal(){Score = _score});
     }
 }

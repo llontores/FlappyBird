@@ -1,8 +1,15 @@
 using UnityEngine.Events;
+using Zenject;
 
 public class StartScreen : Screen
 {
-    public event UnityAction PlayButtonClick;
+    private SignalBus _signalBus;
+
+    [Inject]
+    public void Construct(SignalBus signalBus)
+    {
+        _signalBus = signalBus;
+    }
 
     public override void Close()
     {
@@ -18,6 +25,6 @@ public class StartScreen : Screen
 
     protected override void OnButtonClick()
     {
-        PlayButtonClick?.Invoke();
+        _signalBus.Fire(new PlayButtonClickedSignal());
     }
 }

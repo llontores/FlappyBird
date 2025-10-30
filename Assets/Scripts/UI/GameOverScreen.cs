@@ -1,8 +1,15 @@
 using UnityEngine.Events;
+using Zenject;
 
 public class GameOverScreen : Screen
 {
-    public event UnityAction RestartButtonClick;
+    private SignalBus _signalBus;
+
+    [Inject]
+    public void Construct(SignalBus signalBus)
+    {
+        _signalBus = signalBus;
+    }
 
     public override void Close()
     {
@@ -18,6 +25,6 @@ public class GameOverScreen : Screen
 
     protected override void OnButtonClick()
     {
-        RestartButtonClick?.Invoke();
+        _signalBus.Fire(new RestartButtonClickedSignal());
     }
 }
