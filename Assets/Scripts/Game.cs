@@ -42,7 +42,6 @@ public class Game : IInitializable, IDisposable
     private void OnRestartButtonClick()
     {
         _gameOverScreen.Close();
-        _spawner.ResetPool();
         StartGame();
     }
 
@@ -53,14 +52,17 @@ public class Game : IInitializable, IDisposable
     }
     private void StartGame()
     {
-        Time.timeScale = 1;
+        _spawner.ResetPool();
         _bird.ResetPlayer();
+        _spawner.StartSpawning();
+        Time.timeScale = 1;
     }
 
     private void OnGameOver()
     {
         Time.timeScale = 0;
         _gameOverScreen.Open();
+        _spawner.StopSpawning();
     }
 }
     

@@ -1,50 +1,44 @@
 using System.Collections.Generic;
 using UnityEngine;
-using System.Linq;
 
 public class ObjectPool : MonoBehaviour
 {
     [SerializeField] private GameObject _container;
     [SerializeField] private int _capacity; 
-
-    private List<GameObject> _pool = new List<GameObject>();
-    private Camera _camera;
+    public GameObject Container => _container;
+    
+    private Queue<GameObject> _pool = new Queue<GameObject>();
 
     protected void Initialize(GameObject prefab){
-
-        _camera = Camera.main;
         
         for (int i = 0; i < _capacity; i++)
         {
             GameObject spawned = Instantiate(prefab,_container.transform);
             spawned.SetActive(false);
 
-            _pool.Add(spawned);
+            _pool.Enqueue(spawned);
         }
     }
 
     protected bool TryGetObject(out GameObject result){
-        result = _pool.FirstOrDefault(p => p.activeSelf == false);
-
+        result = _pool.Count > 0 ? _pool.Dequeue() : null;
         return result != null;
     }
 
-    public void ResetPool(){
-        foreach (GameObject pipe in _pool)
+    public void ResetPool()
+    {
+        _pool.Clear();
+        
+        foreach (Transform child in _container.transform)
         {
-            pipe.SetActive(false);   
+            child.gameObject.SetActive(false);
+            _pool.Enqueue(child.gameObject);
         }
     }
 
-    protected void DisableObjectsAbroadScreen(){
-        Vector3 disablePoint = _camera.ViewportToWorldPoint(new Vector2(0, 0.5f));
-
-        foreach (GameObject pipe in _pool)
-        {
-            if(pipe.activeSelf == true){
-                if(pipe.transform.position.x < disablePoint.x)
-                    pipe.SetActive(false);
-            }
-        }
+    public void ReturnObject(GameObject pipe)
+    {
+        pipe.SetActive(false);
+        _pool.Enqueue(pipe);
     }
 }

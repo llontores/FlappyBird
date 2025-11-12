@@ -9,28 +9,45 @@ public class PipeSpawner : ObjectPool
     [SerializeField] private float _delay;
 
     private Coroutine _spawnPipesJob;
+    private bool _isSpawning;
 
-    private void Start(){
+    private void Start()
+    {
         Initialize(_prefab);
-        _spawnPipesJob = StartCoroutine(SpawnPipes());
     }
 
-    private IEnumerator SpawnPipes(){
-        
-        WaitForSeconds delay = new WaitForSeconds(_delay);
+    private IEnumerator SpawnPipes()
+    {
+        _isSpawning = true;
 
-        while(true){
-
-            if(TryGetObject(out GameObject pipe)){
-                float spawnPointY = Random.Range(_minPositionY,_maxPositionY);
-                Vector3 spawnPoint = new Vector3(transform.position.x,spawnPointY,transform.position.z);
-                pipe.SetActive(true);
+        while (_isSpawning)
+        {
+            if (TryGetObject(out GameObject pipe))
+            {
+                float spawnPointY = Random.Range(_minPositionY, _maxPositionY);
+                Vector3 spawnPoint = new Vector3(transform.position.x, spawnPointY, transform.position.z);
                 pipe.transform.position = spawnPoint;
-                
-                DisableObjectsAbroadScreen();
+                pipe.SetActive(true);
             }
 
-            yield return delay;
+            yield return new WaitForSeconds(_delay);
         }
+    }
+
+    public void StopSpawning()
+    {
+        _isSpawning = false;
+
+        if (_spawnPipesJob != null)
+        {
+            StopCoroutine(_spawnPipesJob);
+            _spawnPipesJob = null;
+        }
+    }
+
+    public void StartSpawning()
+    {
+        StopSpawning();
+        _spawnPipesJob = StartCoroutine(SpawnPipes());
     }
 }

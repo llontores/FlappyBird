@@ -7,13 +7,11 @@ public class Score : MonoBehaviour
     [SerializeField] private TMP_Text _text;
 
     private SignalBus _signalBus;
-    private Bird _bird;
 
     [Inject]
     public void Construct(SignalBus signalBus, Bird bird)
     {
         _signalBus = signalBus;
-        _bird = bird;
     }
     
     private void OnEnable()
