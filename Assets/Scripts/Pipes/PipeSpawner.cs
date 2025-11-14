@@ -18,6 +18,7 @@ public class PipeSpawner : ObjectPool
 
     private IEnumerator SpawnPipes()
     {
+        print(transform.position);
         _isSpawning = true;
 
         while (_isSpawning)
