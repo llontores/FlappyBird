@@ -1,10 +1,16 @@
 using Zenject;
+using Zenject.SpaceFighter;
 
 public class GameInstaller : MonoInstaller
 {
     public override void InstallBindings()
     {
-        Container.BindInterfacesAndSelfTo<Game>().AsSingle();
+        //Container.BindInterfacesAndSelfTo<Game>().AsSingle();
+        Container.BindInterfacesAndSelfTo<GameBootstrap>().AsSingle();
+        Container.BindInterfacesAndSelfTo<PlayButton>().AsSingle();
+        Container.BindInterfacesAndSelfTo<RestartButton>().AsSingle();
+        Container.Bind<GameLauncher>().AsSingle();
+        Container.Bind<GameOverHandler>().AsSingle();
         Container.Bind<Bird>().FromComponentInHierarchy().AsSingle();
         Container.Bind<PipeSpawner>().FromComponentInHierarchy().AsSingle();
         Container.Bind<ObjectPool>().To<PipeSpawner>().FromResolve();
